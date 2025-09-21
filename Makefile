@@ -51,3 +51,8 @@ $(TARGET): $(OBJ) $(LIB)
 
 clean:
 	rm -rf $(OBJDIR)/*.o $(BINDIR)/client_static
+# Install target
+install:
+	sudo cp bin/client_dynamic /usr/local/bin/client
+	sudo cp man/man3/mycat.1 /usr/local/share/man/man3/
+	sudo mandb
