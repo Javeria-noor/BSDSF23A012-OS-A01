@@ -49,3 +49,24 @@ ROLL_NO-OS-A01/
 ### Task 4: Version Control
 - All files were added, committed, and pushed to the `multifile-build` branch on GitHub.  
 - A tag `v0.1.1-multifile` was created to mark this stable version.
+
+
+
+# Feature 4: Dynamic Library Build
+
+## 1. Overview
+
+In this feature, the project was evolved to use a **dynamic/shared library** (`.so`) instead of static linking. This approach allows the operating system to load the library into memory at runtime, reducing executable size and enabling efficient memory usage.
+
+---
+
+## 2. Implementation Details
+
+### a) Position-Independent Code (-fPIC)
+
+- All library source files (`myfilefunctions.c`, `mystrfunctions.c`) were compiled with the `-fPIC` flag:
+  
+```bash
+gcc -fPIC -c src/myfilefunctions.c -o obj/myfilefunctions.o
+gcc -fPIC -c src/mystrfunctions.c -o obj/mystrfunctions.o
+
