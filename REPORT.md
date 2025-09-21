@@ -70,3 +70,20 @@ In this feature, the project was evolved to use a **dynamic/shared library** (`.
 gcc -fPIC -c src/myfilefunctions.c -o obj/myfilefunctions.o
 gcc -fPIC -c src/mystrfunctions.c -o obj/mystrfunctions.o
 
+## Feature 5: Creating and Accessing Man Pages
+
+**Concepts Covered:** Linux Documentation, man pages, groff formatting, Makefile install Target
+
+---
+
+### Task 1: Branch Setup
+- Created a new branch `man-pages` from the updated `main` branch.
+- All changes related to documentation and install target were committed to this branch.
+
+---
+
+### Task 2: Man Page Creation
+- Created the directories:
+
+```bash
+mkdir -p man/man3
