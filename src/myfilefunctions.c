@@ -1,64 +1,35 @@
-#define _GNU_SOURCE
-#include <stdio.h>
+#include "../include/myfilefunctions.h"
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include "../include/myfilefunctions.h"
 
 int wordCount(FILE* file, int* lines, int* words, int* chars) {
-    if (!file || !lines || !words || !chars) return -1;
-    rewind(file);
+    if(!file) return -1;
     *lines = *words = *chars = 0;
-    int in_word = 0;
-    int c;
-    while ((c = fgetc(file)) != EOF) {
+    char c, last = ' ';
+    while((c = fgetc(file)) != EOF) {
         (*chars)++;
-        if (c == '\n') (*lines)++;
-        if (isspace(c)) {
-            in_word = 0;
-        } else {
-            if (!in_word) {
-                (*words)++;
-                in_word = 1;
-            }
-        }
+        if(c == '\n') (*lines)++;
+        if((c==' '||c=='\n'||c=='\t') && !(last==' '||last=='\n'||last=='\t')) (*words)++;
+        last = c;
     }
+    if(last != ' ' && last != '\n' && last != '\t') (*words)++;
     return 0;
 }
 
 int mygrep(FILE* fp, const char* search_str, char*** matches) {
-    if (!fp || !search_str || !matches) return -1;
-    rewind(fp);
-    size_t capacity = 8;
-    size_t count = 0;
-    char** arr = malloc(capacity * sizeof(char*));
-    if (!arr) return -1;
-
-    char* line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    while ((read = getline(&line, &len, fp)) != -1) {
-        if (strstr(line, search_str) != NULL) {
-            if (count == capacity) {
-                capacity *= 2;
-                char** tmp = realloc(arr, capacity * sizeof(char*));
-                if (!tmp) {
-                    for (size_t i=0;i<count;i++) free(arr[i]);
-                    free(arr);
-                    free(line);
-                    return -1;
-                }
-                arr = tmp;
+    if(!fp || !search_str) return -1;
+    char line[1024];
+    int count = 0, size = 10;
+    *matches = malloc(sizeof(char*) * size);
+    while(fgets(line, sizeof(line), fp)) {
+        if(strstr(line, search_str)) {
+            if(count >= size) {
+                size *= 2;
+                *matches = realloc(*matches, sizeof(char*) * size);
             }
-            arr[count++] = strdup(line);
+            (*matches)[count] = strdup(line);
+            count++;
         }
     }
-    free(line);
-    if (count == 0) {
-        free(arr);
-        *matches = NULL;
-        return 0;
-    }
-    *matches = arr;
-    return (int)count;
+    return count;
 }
