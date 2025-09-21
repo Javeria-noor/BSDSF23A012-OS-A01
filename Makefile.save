@@ -1,0 +1,129 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Iinclude -g
+SRCDIR = src
+OBJDIR = obj
+BINDIR = bin
+
+SRC = $(wildcard $(SRCDIR)/*.c)
+OBJ = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
+TARGET = $(BINDIR)/client
+
+.PHONY: all clean dirs
+
+all: dirs $(TARGET)
+
+dirs:
+	mkdir -p $(OBJDIR) $(BINDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) $^ -o $@
+
+clean:
+	rm -rf $(OBJDIR)/*.o $(BINDIR)/client
+CC = gcc
+CFLAGS = -Wall -Wextra -Iinclude -g
+SRCDIR = src
+OBJDIR = obj
+BINDIR = bin
+LIBDIR = lib
+
+# Only compile main.c now
+SRC = $(SRCDIR)/main.c
+OBJ = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
+TARGET = $(BINDIR)/client_static
+LIB = $(LIBDIR)/libmyutils.a
+
+.PHONY: all clean dirs
+
+all: dirs $(TARGET)
+
+dirs:
+	mkdir -p $(OBJDIR) $(BINDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJ) $(LIB)
+	$(CC) $(CFLAGS) $^ -o $@
+
+clean:
+	rm -rf $(OBJDIR)/*.o $(BINDIR)/client_static
+# Dynamic build objects
+OBJS = obj/main.o
+LIB = lib/libmyutils.so
+LIBOBJS = obj/myfilefunctions.o obj/mystrfunctions.o
+
+# Compile PIC objects
+obj/%.o: src/%.c
+	gcc -fPIC -c $< -o $@
+
+# Build shared library
+$(LIB): $(LIBOBJS)
+	gcc -shared -o $(LIB) $(LIBOBJS)
+
+# Build dynamic client
+bin/client_dynamic: $(OBJS) $(LIB)
+	gcc -o bin/client_dynamic $(OBJS) -Llib -lmyutils
+
+# Default target
+all: $(LIB) bin/client_dynamic
+# Dynamic build objects
+OBJS = obj/main.o
+LIB = lib/libmyutils.so
+LIBOBJS = obj/myfilefunctions.o obj/mystrfunctions.o
+
+# Compile PIC objects
+obj/%.o: src/%.c
+	gcc -fPIC -c $< -o $@
+
+# Build shared library
+$(LIB): $(LIBOBJS)
+	gcc -shared -o $(LIB) $(LIBOBJS)
+
+# Build dynamic client
+bin/client_dynamic: $(OBJS) $(LIB)
+	gcc -o bin/client_dynamic $(OBJS) -Llib -lmyutils
+
+# Default target
+all: $(LIB) bin/client_dynamic
+# Dynamic build objects
+OBJS = obj/main.o
+LIB = lib/libmyutils.so
+LIBOBJS = obj/myfilefunctions.o obj/mystrfunctions.o
+
+# Compile PIC objects
+obj/%.o: src/%.c
+	gcc -fPIC -c $< -o $@
+
+# Build shared library
+$(LIB): $(LIBOBJS)
+	gcc -shared -o $(LIB) $(LIBOBJS)
+
+# Build dynamic client
+bin/client_dynamic: $(OBJS) $(LIB)
+	gcc -o bin/client_dynamic $(OBJS) -Llib -lmyutils
+
+# Default target
+all: $(LIB) bin/client_dynamic
+# Dynamic build objects
+OBJS = obj/main.o
+LIB = lib/libmyutils.so
+LIBOBJS = obj/myfilefunctions.o obj/mystrfunctions.o
+
+# Compile PIC objects
+obj/%.o: src/%.c
+	gcc -fPIC -c $< -o $@
+
+# Build shared library
+$(LIB): $(LIBOBJS)
+	gcc -shared -o $(LIB) $(LIBOBJS)
+
+# Build dynamic client
+bin/client_dynamic: $(OBJS) $(LIB)
+	gcc -o bin/client_dynamic $(OBJS) -Llib -lmyutils
+
+# Default target
+all: $(LIB) bin/client_dynamic
