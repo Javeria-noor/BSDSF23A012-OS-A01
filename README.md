@@ -25,7 +25,7 @@ Applying Git workflows: branching, merging, tagging
 Publishing GitHub releases with assets
 
 📂 Project Structure
-ROLL_NO-OS-A01/
+BSDSF23A012-OS-A01/
 ├── src/          # Source code (.c files)
 ├── include/      # Header files (.h files)
 ├── lib/          # Static and dynamic libraries (.a / .so)
